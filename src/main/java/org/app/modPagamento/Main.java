@@ -25,7 +25,7 @@ public class Main {
             switch(option){
                 case 1:
                     Usuario newUser = inputUsuario();
-                    newUser.salvarUsuario();
+                    newUser.registrarUsuario();
                     break;
                 case 2:
                     listarUsuarios();
