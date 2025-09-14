@@ -22,12 +22,9 @@ public abstract class Model<T extends Model<T>> {
     private String encripKeyPath;
     private String decripKeyPath;
 
-    // Serviços das classes modelo ---------------------
-    private CsvManager csvManager = new CsvManager();
-
     // Métodos das classes modelos ---------------------
     public void insert(T obj) throws IOException {
-        csvManager.addLineInFile(this.toCsv(), csvFilePath);
+        CsvManager.addLineInFile(this.toCsv(), csvFilePath);
     }
 
     public void delete(T obj) {

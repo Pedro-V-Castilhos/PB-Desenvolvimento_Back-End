@@ -2,22 +2,31 @@ package org.app.modPagamento.servicos;
 
 
 import java.io.*;
+import java.lang.reflect.Field;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
 public class CsvManager {
     // Métodos do Gerenciador ==============================================================
 
-    public void createFileIfNotExists(String path) throws IOException {
+    public void createFileIfNotExists(Object object, String path) throws IOException {
         // Gera o caminho do arquivo ---------------------------
         Path filePath = Paths.get(path);
 
         if(Files.notExists(filePath)) {
             Files.createFile(filePath);
+
+            // Pega todos os campos da classe e torna eles acessíveis------------
+            Field[] fields = object.getClass().getFields();
+            Arrays.stream(fields).forEach(field -> {field.setAccessible(true);});
+
+            // Pega o nome de todos os campos da classe e monta o cabeçalho
+            addLineInFile(Arrays.stream(fields).map(Field::getName).toArray(String[]::new),path);
         }
     }
 
