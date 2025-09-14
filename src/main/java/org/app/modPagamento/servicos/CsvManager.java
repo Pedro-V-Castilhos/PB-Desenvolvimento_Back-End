@@ -14,7 +14,7 @@ import java.util.Optional;
 public class CsvManager {
     // Métodos do Gerenciador ==============================================================
 
-    public void createFileIfNotExists(Object object, String path) throws IOException {
+    public static void createFileIfNotExists(Object object, String path) throws IOException {
         // Gera o caminho do arquivo ---------------------------
         Path filePath = Paths.get(path);
 
@@ -31,7 +31,7 @@ public class CsvManager {
     }
 
     // Reader
-    public ArrayList<String[]> listContent(String path) throws IOException {
+    public static ArrayList<String[]> listContent(String path) throws IOException {
         // Prepara para retorno ------------------------------
         ArrayList<String[]> returnData = new ArrayList<>();
 
@@ -54,7 +54,7 @@ public class CsvManager {
         return returnData;
     }
 
-    public void addLineInFile(String[] data, String path) throws IOException {
+    public static void addLineInFile(String[] data, String path) throws IOException {
 
         //Instancia um novo writer ---------------------------
         BufferedWriter bw = new BufferedWriter(new FileWriter(path, true));
@@ -66,7 +66,7 @@ public class CsvManager {
         bw.close();
     }
 
-    public void writeFile(ArrayList<String[]> data, String path) throws IOException {
+    public static void writeFile(ArrayList<String[]> data, String path) throws IOException {
 
         //Instancia um novo writer ---------------------------
         BufferedWriter bw = new BufferedWriter(new FileWriter(path, false));
@@ -81,7 +81,7 @@ public class CsvManager {
         bw.close();
     }
 
-    public Optional<String[]> getLineInFile(String searchData, String path) throws IOException {
+    public static Optional<String[]> getLineInFile(String searchData, String path) throws IOException {
         // Pega todos os dados que está no arquivo -----------
         ArrayList<String[]> fileContent = listContent(path);
 
@@ -99,7 +99,7 @@ public class CsvManager {
         return Optional.ofNullable(returnData);
     }
 
-    public void removeInFile(String removeValue, String path) throws IOException {
+    public static void removeInFile(String removeValue, String path) throws IOException {
         // Procura a linha que deseja ser removida -----------------------------------
         Optional<String[]> lineForRemoval = getLineInFile(removeValue, path);
 
