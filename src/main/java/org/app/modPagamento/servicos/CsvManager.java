@@ -45,16 +45,13 @@ public class CsvManager {
         return returnData;
     }
 
-    public void addInFile(ArrayList<String[]> data, String path) throws IOException {
+    public void addLineInFile(String[] data, String path) throws IOException {
 
         //Instancia um novo writer ---------------------------
         BufferedWriter bw = new BufferedWriter(new FileWriter(path, true));
 
-        // Para cada linha que tiver no array ----------------
-        for (String[] line : data) {
-            bw.write(String.join(",", line));
-            bw.newLine();
-        }
+        // Faz a escrita no arquivo --------------------------
+        bw.write(String.join(",", data));
 
         // Fecha o arquivo -----------------------------------
         bw.close();

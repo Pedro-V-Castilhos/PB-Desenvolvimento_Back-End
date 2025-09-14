@@ -62,18 +62,18 @@ public class Usuario {
     }
 
     // Métodos de leitura e escrita de CSV =======================================================
-    public void registrarUsuario(){
-        ArrayList<String[]> arraySalvar = new ArrayList<>();
-        String[] dadosUsuario = {idUsuario.toString(), getNome(), getCpf(), getTelefone(), getEmail()};
-        arraySalvar.add(dadosUsuario);
-
-        CsvManager csv = new CsvManager();
-        try {
-            csv.addInFile(arraySalvar, savePath);
-        }catch(Exception e){
-            System.out.println(e);
-        }
-    }
+//    public void registrarUsuario(){
+//        ArrayList<String[]> arraySalvar = new ArrayList<>();
+//        String[] dadosUsuario = {idUsuario.toString(), getNome(), getCpf(), getTelefone(), getEmail()};
+//        arraySalvar.add(dadosUsuario);
+//
+//        CsvManager csv = new CsvManager();
+//        try {
+//            csv.addInFile(arraySalvar, savePath);
+//        }catch(Exception e){
+//            System.out.println(e);
+//        }
+//    }
 
     public static void listarUsuarios(){
         try {
