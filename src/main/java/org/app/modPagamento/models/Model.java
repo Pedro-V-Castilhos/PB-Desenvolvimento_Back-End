@@ -23,7 +23,7 @@ import java.util.stream.Stream;
 public abstract class Model<T extends Model<T>> {
     // Campos das classes modelo -----------------------
     public int id;
-    private String csvFilePath;
+    private static String csvFilePath;
     private String encripKeyPath;
     private String decripKeyPath;
 
@@ -39,11 +39,11 @@ public abstract class Model<T extends Model<T>> {
     }
 
     // Métodos das classes modelos ---------------------
-    public void insert(T obj) throws IOException {
+    public void insert() throws IOException {
         if(CsvManager.createFileIfNotExists(csvFilePath)){
             // Pega todos os campos da classe e torna eles acessíveis------------
-            Field[] superFields = obj.getClass().getSuperclass().getFields();
-            Field[] fields = obj.getClass().getDeclaredFields();
+            Field[] superFields = this.getClass().getSuperclass().getFields();
+            Field[] fields = this.getClass().getDeclaredFields();
 
             Stream.of(superFields, fields)
                     .flatMap(Arrays::stream)
@@ -53,23 +53,22 @@ public abstract class Model<T extends Model<T>> {
             CsvManager.addLineInFile(Stream.of(superFields,fields).flatMap(Arrays::stream).map(Field::getName).toArray(String[]::new), csvFilePath);
         }
 
-        CsvManager.addLineInFile(toCsv(obj), csvFilePath);
+        CsvManager.addLineInFile(toCsv(this), csvFilePath);
     }
 
-    public void delete(T obj) throws IOException {
-        CsvManager.removeInFile(String.format("%d",obj.getId()), csvFilePath);
+    public static void delete(Integer id) throws IOException {
+        CsvManager.removeInFile(id.toString(), csvFilePath);
     }
 
-    public Optional<String[]> find(T obj) throws IOException {
-        return CsvManager.getLineInFile(String.format("%d",obj.getId()), csvFilePath);
+    public static Optional<String[]> find(Integer id) throws IOException {
+        return CsvManager.getLineInFile(id.toString(), csvFilePath);
     }
 
-    public ArrayList<T> listAll() throws IOException {
-        ArrayList<String[]> fileContent = CsvManager.listContent(csvFilePath);
-        return null;
+    public static ArrayList<String[]> listAll() throws IOException {
+        return CsvManager.listContent(csvFilePath);
     }
 
-    public String[] toCsv(T obj) throws IllegalArgumentException{
+    public String[] toCsv(Model<T> obj) throws IllegalArgumentException{
         // Pega todos os campos da classe e torna eles acessíveis------------
         Field[] superFields = obj.getClass().getSuperclass().getFields();
         Field[] fields = obj.getClass().getDeclaredFields();

@@ -1,7 +1,9 @@
 package org.app.modPagamento.models;
 
-public class Administrador extends Usuario {
-    public Administrador(int idUsuario, String nome, String cpf, String telefone, String email) {
-        super(idUsuario, nome, cpf, telefone, email);
+import java.io.IOException;
+
+public class Administrador extends User {
+    public Administrador(String name, String cpf, String phone, String email) throws IOException {
+        super("Admin.csv", name, cpf, phone, email);
     }
 }
