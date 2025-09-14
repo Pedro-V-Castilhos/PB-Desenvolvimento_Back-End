@@ -1,4 +1,4 @@
-package org.app.modPagamento.entidades;
+package org.app.modPagamento.models;
 
 public class Administrador extends Usuario {
     public Administrador(int idUsuario, String nome, String cpf, String telefone, String email) {

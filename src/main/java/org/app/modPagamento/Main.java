@@ -1,12 +1,10 @@
 package org.app.modPagamento;
 
-import org.app.modPagamento.entidades.Usuario;
-import org.app.modPagamento.servicos.ManagerCSV;
+import org.app.modPagamento.models.Usuario;
 
-import java.util.ArrayList;
 import java.util.Scanner;
 
-import static org.app.modPagamento.entidades.Usuario.listarUsuarios;
+import static org.app.modPagamento.models.Usuario.listarUsuarios;
 
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.

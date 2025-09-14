@@ -1,4 +1,4 @@
-package org.app.modPagamento.entidades;
+package org.app.modPagamento.models;
 
 public class Criptography {
     private String cripKeyPath;

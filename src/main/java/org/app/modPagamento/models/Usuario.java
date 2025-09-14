@@ -1,6 +1,6 @@
-package org.app.modPagamento.entidades;
+package org.app.modPagamento.models;
 
-import org.app.modPagamento.servicos.ManagerCSV;
+import org.app.modPagamento.servicos.CsvManager;
 
 import java.util.ArrayList;
 
@@ -67,9 +67,9 @@ public class Usuario {
         String[] dadosUsuario = {idUsuario.toString(), getNome(), getCpf(), getTelefone(), getEmail()};
         arraySalvar.add(dadosUsuario);
 
-        ManagerCSV csv = new ManagerCSV(savePath);
+        CsvManager csv = new CsvManager();
         try {
-            csv.write(arraySalvar);
+            csv.addInFile(arraySalvar, savePath);
         }catch(Exception e){
             System.out.println(e);
         }
@@ -77,8 +77,8 @@ public class Usuario {
 
     public static void listarUsuarios(){
         try {
-            ManagerCSV csv = new ManagerCSV(savePath);
-            ArrayList<String[]> listaUsuarios = csv.read();
+            CsvManager csv = new CsvManager();
+            ArrayList<String[]> listaUsuarios = csv.listContent(savePath);
 
             for(String[] usuario : listaUsuarios){
                 String output = String.format("===============================\n" +
