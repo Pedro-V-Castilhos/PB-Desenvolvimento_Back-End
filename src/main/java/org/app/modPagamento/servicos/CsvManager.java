@@ -8,26 +8,21 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 public class CsvManager {
     // Métodos do Gerenciador ==============================================================
-
-    public static void createFileIfNotExists(Object object, String path) throws IOException {
+    public static <T> boolean createFileIfNotExists(String path) throws IOException {
         // Gera o caminho do arquivo ---------------------------
         Path filePath = Paths.get(path);
 
         if(Files.notExists(filePath)) {
             Files.createFile(filePath);
-
-            // Pega todos os campos da classe e torna eles acessíveis------------
-            Field[] fields = object.getClass().getFields();
-            Arrays.stream(fields).forEach(field -> {field.setAccessible(true);});
-
-            // Pega o nome de todos os campos da classe e monta o cabeçalho
-            addLineInFile(Arrays.stream(fields).map(Field::getName).toArray(String[]::new),path);
+            return true;
         }
+
+        return false;
     }
 
     // Reader
@@ -61,6 +56,7 @@ public class CsvManager {
 
         // Faz a escrita no arquivo --------------------------
         bw.write(String.join(",", data));
+        bw.newLine();
 
         // Fecha o arquivo -----------------------------------
         bw.close();

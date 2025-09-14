@@ -1,7 +1,21 @@
 package org.app.modPagamento.models;
 
-public class Item {
+import lombok.Getter;
+import lombok.Setter;
+
+import java.io.IOException;
+
+@Getter
+@Setter
+public class Item extends Model {
     private String descricao;
     private Integer quantidade;
     private Double valorUnitario;
+
+    public Item(String descricao, Integer qtde, Double price) throws IOException {
+        super("Items.csv");
+        this.descricao = descricao;
+        this.quantidade = qtde;
+        this.valorUnitario = price;
+    }
 }
