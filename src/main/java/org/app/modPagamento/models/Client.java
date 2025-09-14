@@ -10,7 +10,7 @@ import java.util.ArrayList;
 @Getter
 public class Client extends User {
     private String address;
-    private ArrayList<Cartao> creditCards;
+    private ArrayList<CreditCard> creditCards;
     private ArrayList<Compra> compras;
 
     public Client(String name, String cpf, String phone, String email, String address) throws IOException {

@@ -4,7 +4,7 @@ public class Pagamento {
     public String status;
     private String meioPgto;
 
-    public String getCartaoToken(Cartao cartao){
+    public String getCartaoToken(CreditCard cartao){
         return null;
     }
 }
