@@ -13,9 +13,6 @@ public abstract class User extends Model {
     private String phone;
     private String email;
 
-    // Caminho pro arquivo CSV
-    private static final String savePath = "C:\\Users\\Pedro Viana\\IdeaProjects\\TP3 - Projeto de Bloco\\src\\main\\java\\org\\app\\modPagamento\\usuarios.csv";
-
     // Construtor ==============================================================================
     public User(String csvFilePath, String name, String cpf, String phone, String email) throws IOException {
         super(csvFilePath);
@@ -23,5 +20,9 @@ public abstract class User extends Model {
         this.cpf = cpf;
         this.phone = phone;
         this.email = email;
+    }
+
+    public User(String csvFilePath) throws IOException {
+        super(csvFilePath);
     }
 }

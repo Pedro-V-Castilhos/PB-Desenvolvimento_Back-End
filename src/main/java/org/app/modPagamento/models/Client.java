@@ -18,6 +18,15 @@ public class Client extends User {
         this.address = address;
     }
 
+    public Client(String[] data) throws IOException {
+        super("Clients.csv",data[0], data[1], data[2], data[3]);
+        this.address = data[4];
+    }
+
+    public Client() throws IOException {
+        super("Clients.csv");
+    }
+
     public void loadCreditCards() throws IOException {}
     public void loadPurchases() throws IOException {}
 }

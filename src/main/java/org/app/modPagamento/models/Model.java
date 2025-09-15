@@ -23,7 +23,7 @@ import java.util.stream.Stream;
 public abstract class Model<T extends Model<T>> {
     // Campos das classes modelo -----------------------
     public int id;
-    private static String csvFilePath;
+    static String csvFilePath;
     private String encripKeyPath;
     private String decripKeyPath;
 
@@ -41,16 +41,19 @@ public abstract class Model<T extends Model<T>> {
     // Métodos das classes modelos ---------------------
     public void insert() throws IOException {
         if(CsvManager.createFileIfNotExists(csvFilePath)){
-            // Pega todos os campos da classe e torna eles acessíveis------------
-            Field[] superFields = this.getClass().getSuperclass().getFields();
-            Field[] fields = this.getClass().getDeclaredFields();
+            List<Field> allFields = new ArrayList<>();
 
-            Stream.of(superFields, fields)
-                    .flatMap(Arrays::stream)
-                    .forEach(field -> field.setAccessible(true));
+            Class<?> current = this.getClass();
+            while (current != null && current != Object.class) {
+                Field[] declared = current.getDeclaredFields();
+                Arrays.stream(declared).forEach(f -> f.setAccessible(true));
+                allFields.addAll(Arrays.asList(declared).reversed());
+
+                current = current.getSuperclass();
+            }
 
             // Pega o nome de todos os campos da classe e monta o cabeçalho
-            CsvManager.addLineInFile(Stream.of(superFields,fields).flatMap(Arrays::stream).map(Field::getName).toArray(String[]::new), csvFilePath);
+            CsvManager.addLineInFile(allFields.reversed().stream().map(Field::getName).toArray(String[]::new), csvFilePath);
         }
 
         CsvManager.addLineInFile(toCsv(this), csvFilePath);
@@ -69,18 +72,23 @@ public abstract class Model<T extends Model<T>> {
     }
 
     public String[] toCsv(Model<T> obj) throws IllegalArgumentException{
-        // Pega todos os campos da classe e torna eles acessíveis------------
-        Field[] superFields = obj.getClass().getSuperclass().getFields();
-        Field[] fields = obj.getClass().getDeclaredFields();
-        Arrays.stream(fields).forEach(field -> {field.setAccessible(true);});
+        List<Field> allFields = new ArrayList<>();
 
-        // Faz o retorno da leitura de todos os campos da classe ------------
-        return Stream.of(superFields, fields)
-                .flatMap(Arrays::stream)
-                .map(field ->
-                {
+        Class<?> current = obj.getClass();
+        while (current != null && current != Object.class) {
+            Field[] declared = current.getDeclaredFields();
+            Arrays.stream(declared).forEach(f -> f.setAccessible(true));
+            allFields.addAll(Arrays.asList(declared).reversed());
+
+            current = current.getSuperclass();
+        }
+
+        // Faz o retorno da leitura de todos os campos
+        return allFields.reversed().stream()
+                .map(field -> {
                     try {
-                        return field.get(obj).toString();
+                        Object value = field.get(obj);
+                        return value == null ? "" : value.toString();
                     } catch (IllegalAccessException e) {
                         throw new RuntimeException(e);
                     }
