@@ -12,6 +12,5 @@ public class DiscCoupon extends Model{
     private double percDiscount;
 
     public DiscCoupon(String token, double percDiscount) throws IOException {
-        super("Coupons.csv");
     }
 }

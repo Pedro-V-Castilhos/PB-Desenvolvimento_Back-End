@@ -13,7 +13,6 @@ public class Payment extends Model {
     private int idApi;
 
     public Payment(String method) throws IOException {
-        super("Payments.csv");
         this.method = method;
     }
 }

@@ -23,19 +23,16 @@ import java.util.stream.Stream;
 public abstract class Model<T extends Model<T>> {
     // Campos das classes modelo -----------------------
     public int id;
-    static String csvFilePath;
+    public static String csvFilePath = "";
     private String encripKeyPath;
     private String decripKeyPath;
 
-    public Model(String csvFilePath) throws IOException {
-
+    public Model() throws IOException {
         if(Files.exists(Paths.get(csvFilePath))){
             id = CsvManager.listContent(csvFilePath).size();
         }else{
             id = 1;
         }
-
-        this.csvFilePath = csvFilePath;
     }
 
     // Métodos das classes modelos ---------------------

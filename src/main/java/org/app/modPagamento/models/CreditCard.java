@@ -12,7 +12,6 @@ public class CreditCard extends Model {
     private User user;
 
     public CreditCard(String propName, String propCpf, String number) throws IOException {
-        super("CreditCards.csv");
         this.propName = propName;
         this.propCpf = propCpf;
         this.number = number;

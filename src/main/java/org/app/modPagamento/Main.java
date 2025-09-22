@@ -24,31 +24,31 @@ public class Main {
 //            System.out.println("Erro ao criar arquivo!" + e.getMessage());
 //        }
 
-        Javalin app = Javalin.create(config -> {
-                    config.router.mount(router -> {}).apiBuilder(() -> {
-                        path("clients", () -> {
-                            path("", () -> {
-                                get(ctx -> {
-                                    Client client = new Client();
-                                    ArrayList<String[]> result = client.listAll();
-                                    ctx.json(result);
-                                });
-                                post(ctx -> {
-                                    try {
-                                        String[] data = ctx.bodyAsClass(String[].class);
-                                        Client client = new Client(data);
-                                        client.insert();
-                                        ctx.result("Ok");
-                                    } catch (Exception e) {
-                                        ctx.result(e.getMessage());
-                                    }
-                                });
-                            });
-                        });
-                    });
-                })
-                .get("/", ctx -> ctx.result("Aplicação está rodando normalmente!"));
-
-        app.start(7000);
+//        Javalin app = Javalin.create(config -> {
+//                    config.router.mount(router -> {}).apiBuilder(() -> {
+//                        path("clients", () -> {
+//                            path("", () -> {
+//                                get(ctx -> {
+//                                    Client client = new Client();
+//                                    ArrayList<String[]> result = client.listAll();
+//                                    ctx.json(result);
+//                                });
+//                                post(ctx -> {
+//                                    try {
+//                                        String[] data = ctx.bodyAsClass(String[].class);
+//                                        Client client = new Client(data);
+//                                        client.insert();
+//                                        ctx.result("Ok");
+//                                    } catch (Exception e) {
+//                                        ctx.result(e.getMessage());
+//                                    }
+//                                });
+//                            });
+//                        });
+//                    });
+//                })
+//                .get("/", ctx -> ctx.result("Aplicação está rodando normalmente!"));
+//
+//        app.start(7000);
     }
 }

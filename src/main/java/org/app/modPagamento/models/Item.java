@@ -13,7 +13,6 @@ public class Item extends Model {
     private Double valorUnitario;
 
     public Item(String descricao, Integer qtde, Double price) throws IOException {
-        super("Items.csv");
         this.descricao = descricao;
         this.quantidade = qtde;
         this.valorUnitario = price;

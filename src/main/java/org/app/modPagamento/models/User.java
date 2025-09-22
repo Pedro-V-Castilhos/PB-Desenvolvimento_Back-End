@@ -14,8 +14,7 @@ public abstract class User extends Model {
     private String email;
 
     // Construtor ==============================================================================
-    public User(String csvFilePath, String name, String cpf, String phone, String email) throws IOException {
-        super(csvFilePath);
+    public User(String name, String cpf, String phone, String email) throws IOException {
         this.name = name;
         this.cpf = cpf;
         this.phone = phone;
@@ -23,6 +22,5 @@ public abstract class User extends Model {
     }
 
     public User(String csvFilePath) throws IOException {
-        super(csvFilePath);
     }
 }
