@@ -85,7 +85,7 @@ public class CsvManager {
         return returnData;
     }
 
-    public static <T> void addLineInFile(Model object, String path) throws IOException {
+    public static <T> void insertObjectAsLine(Model object, String path) throws IOException {
         //Instancia um novo writer ---------------------------
         BufferedWriter bw = new BufferedWriter(new FileWriter(path, true));
 

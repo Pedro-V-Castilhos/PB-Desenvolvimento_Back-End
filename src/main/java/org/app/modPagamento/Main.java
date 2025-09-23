@@ -17,38 +17,37 @@ import static io.javalin.apibuilder.ApiBuilder.*;
 public class Main {
     public static void main(String[] args){
         // Criar os arquivos ------------------------------------------
-//        try {
-//            Client client = new Client("Pedro", "000000000", "62999093237", "pedro.castiçhos@al.infnet.edu.br", "Rua dos bobos, n°0");
-//            client.insert();
-//        }catch(Exception e){
-//            System.out.println("Erro ao criar arquivo!" + e.getMessage());
-//        }
+        try {
+            Client newClient = new Client("Pedro", "000000000", "62999093237", "pedro.castiçhos@al.infnet.edu.br", "Rua dos bobos, n°0");
+            CsvManager.insertObjectAsLine(newClient, Client.csvFileName);
+        }catch(Exception e){
+            System.out.println("Erro ao criar arquivo!" + e.getMessage());
+        }
 
-//        Javalin app = Javalin.create(config -> {
-//                    config.router.mount(router -> {}).apiBuilder(() -> {
-//                        path("clients", () -> {
-//                            path("", () -> {
-//                                get(ctx -> {
-//                                    Client client = new Client();
-//                                    ArrayList<String[]> result = client.listAll();
-//                                    ctx.json(result);
-//                                });
-//                                post(ctx -> {
-//                                    try {
-//                                        String[] data = ctx.bodyAsClass(String[].class);
-//                                        Client client = new Client(data);
-//                                        client.insert();
-//                                        ctx.result("Ok");
-//                                    } catch (Exception e) {
-//                                        ctx.result(e.getMessage());
-//                                    }
-//                                });
-//                            });
-//                        });
-//                    });
-//                })
-//                .get("/", ctx -> ctx.result("Aplicação está rodando normalmente!"));
-//
-//        app.start(7000);
+        Javalin app = Javalin.create(config -> {
+                    config.router.mount(router -> {}).apiBuilder(() -> {
+                        path("clients", () -> {
+                            path("", () -> {
+                                get(ctx -> {
+                                    ArrayList<String[]> result = CsvManager.listContent(Client.csvFileName);
+                                    ctx.json(result);
+                                });
+                                post(ctx -> {
+                                    try {
+                                        String[] data = ctx.bodyAsClass(String[].class);
+                                        Client client = new Client(data);
+                                        CsvManager.insertObjectAsLine(client, Client.csvFileName);
+                                        ctx.result("Ok");
+                                    } catch (Exception e) {
+                                        ctx.result(e.getMessage());
+                                    }
+                                });
+                            });
+                        });
+                    });
+                })
+                .get("/", ctx -> ctx.result("Aplicação está rodando normalmente!"));
+
+        app.start(7000);
     }
 }

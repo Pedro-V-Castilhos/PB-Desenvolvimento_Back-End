@@ -2,7 +2,6 @@ package org.app.modPagamento.models;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.app.modPagamento.Interfaces.ICsvFileReference;
 
 import java.io.IOException;
 
