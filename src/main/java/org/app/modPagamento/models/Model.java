@@ -2,6 +2,7 @@ package org.app.modPagamento.models;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.SneakyThrows;
 import org.app.modPagamento.servicos.CsvManager;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -36,17 +37,11 @@ public abstract class Model<T extends Model<T>> {
     }
 
     // Métodos das classes modelos ---------------------
-    public void insert() throws IOException {
-        if(CsvManager.createFileIfNotExists(csvFilePath)){
-
-        }
-
-        CsvManager.addLineInFile(toCsv(this), csvFilePath);
-    }
-
-    public String[] toCsv(Model<T> obj) throws IllegalArgumentException{
+    public String toCsv(Model<T> obj) throws RuntimeException{
+        // Prepara o array para guardar todos os campos da classe
         List<Field> allFields = new ArrayList<>();
 
+        // Percorre a árvore de herança da classe, guardando os campos declarados no array
         Class<?> current = obj.getClass();
         while (current != null && current != Object.class) {
             Field[] declared = current.getDeclaredFields();
@@ -57,16 +52,16 @@ public abstract class Model<T extends Model<T>> {
         }
 
         // Faz o retorno da leitura de todos os campos
-        return allFields.reversed().stream()
+        return String.join(",",
+                allFields.reversed().stream()
                 .map(field -> {
                     try {
-                        Object value = field.get(obj);
-                        return value == null ? "" : value.toString();
+                        return field.get(obj) == null ? "" : field.get(obj);
                     } catch (IllegalAccessException e) {
                         throw new RuntimeException(e);
                     }
                 })
-                .toArray(String[]::new);
+                .toArray(String[]::new));
     }
 
     public JSONObject toJson(){
