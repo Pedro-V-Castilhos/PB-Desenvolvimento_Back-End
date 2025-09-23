@@ -1,6 +1,8 @@
 package org.app.modPagamento.servicos;
 
 
+import org.app.modPagamento.models.Model;
+
 import java.io.*;
 import java.lang.reflect.Field;
 import java.nio.file.Files;
@@ -55,7 +57,9 @@ public class CsvManager {
 
         // Pega o nome de todos os campos da classe e monta o cabeçalho
         // Reversed é para organização na ordem final que os campos irão ficar*
-        CsvManager.addLineInFile(allFields.reversed().stream().map(Field::getName).toArray(String[]::new), path);
+        ArrayList<String[]> headers = new ArrayList<>();
+        headers.add(allFields.reversed().stream().map(Field::getName).toArray(String[]::new));
+        CsvManager.writeFile(headers, path);
     }
 
     public static ArrayList<String[]> listContent(String path) throws IOException {
@@ -81,12 +85,13 @@ public class CsvManager {
         return returnData;
     }
 
-    public static void addLineInFile(String[] data, String path) throws IOException {
+    public static <T> void addLineInFile(Model object, String path) throws IOException {
         //Instancia um novo writer ---------------------------
         BufferedWriter bw = new BufferedWriter(new FileWriter(path, true));
 
-        // Faz a escrita no arquivo --------------------------
-        bw.write(String.join(",", data));
+        // Configura o ID do produto adicionado e faz a escrita no arquivo --------------------------
+        object.setId(listContent(path).size());
+        bw.write(object.toCsv());
         bw.newLine();
 
         // Fecha o arquivo -----------------------------------

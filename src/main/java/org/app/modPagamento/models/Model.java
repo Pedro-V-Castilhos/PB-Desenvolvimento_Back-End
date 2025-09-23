@@ -24,25 +24,16 @@ import java.util.stream.Stream;
 public abstract class Model<T extends Model<T>> {
     // Campos das classes modelo -----------------------
     public int id;
-    public static String csvFilePath = "";
     private String encripKeyPath;
     private String decripKeyPath;
 
-    public Model() throws IOException {
-        if(Files.exists(Paths.get(csvFilePath))){
-            id = CsvManager.listContent(csvFilePath).size();
-        }else{
-            id = 1;
-        }
-    }
-
     // Métodos das classes modelos ---------------------
-    public String toCsv(Model<T> obj) throws RuntimeException{
+    public String toCsv() throws RuntimeException{
         // Prepara o array para guardar todos os campos da classe
         List<Field> allFields = new ArrayList<>();
 
         // Percorre a árvore de herança da classe, guardando os campos declarados no array
-        Class<?> current = obj.getClass();
+        Class<?> current = this.getClass();
         while (current != null && current != Object.class) {
             Field[] declared = current.getDeclaredFields();
             Arrays.stream(declared).forEach(f -> f.setAccessible(true));
@@ -56,7 +47,7 @@ public abstract class Model<T extends Model<T>> {
                 allFields.reversed().stream()
                 .map(field -> {
                     try {
-                        return field.get(obj) == null ? "" : field.get(obj);
+                        return field.get(this) == null ? "" : field.get(this);
                     } catch (IllegalAccessException e) {
                         throw new RuntimeException(e);
                     }

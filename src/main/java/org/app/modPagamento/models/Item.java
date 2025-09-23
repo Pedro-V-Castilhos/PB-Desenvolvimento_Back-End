@@ -2,12 +2,14 @@ package org.app.modPagamento.models;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.app.modPagamento.Interfaces.ICsvFileReference;
 
 import java.io.IOException;
 
 @Getter
 @Setter
-public class Item extends Model {
+public class Item extends Model{
+    public static final String csvFileName = "Items.csv";
     private String descricao;
     private Integer quantidade;
     private Double valorUnitario;

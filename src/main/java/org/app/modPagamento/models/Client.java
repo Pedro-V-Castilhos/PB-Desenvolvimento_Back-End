@@ -10,9 +10,10 @@ import java.util.ArrayList;
 @Getter
 public class Client extends User {
     // Campos do Cliente ============================================================
+    public static final String csvFileName = "Clients.csv";
     private String address;
     private ArrayList<CreditCard> creditCards;
-    private ArrayList<Compra> compras;
+    private ArrayList<Purchase> compras;
 
     // Construtores =================================================================
     // Construtor com dados explícitos
@@ -25,10 +26,6 @@ public class Client extends User {
     public Client(String[] data) throws IOException {
         super(data[0], data[1], data[2], data[3]);
         this.address = data[4];
-    }
-
-    public Client() throws IOException {
-        super("Clients.csv");
     }
 
     // Métodos =======================================================================
