@@ -8,24 +8,56 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
 public class CsvManager {
     // Métodos do Gerenciador ==============================================================
-    public static <T> boolean createFileIfNotExists(String path) throws IOException {
+    public static <T> boolean createFileIfNotExists(Class<T> classe, String path) throws IOException {
         // Gera o caminho do arquivo ---------------------------
         Path filePath = Paths.get(path);
 
+        // Verifica se o arquivo existe ------------------------
         if(Files.notExists(filePath)) {
+            // Se o arquivo não existe, cria ele ---------------
             Files.createFile(filePath);
+            // Cria os cabeçalhos do arquivo
+            CsvManager.createHeaders(classe, path);
+            // Retorna true se o arquivo foi criado
             return true;
         }
 
+        // Retorna false se o arquivo já existe
         return false;
     }
 
-    // Reader
+    public static <T> void createHeaders(Class<T> classe, String path) throws IOException {
+        // Prepara o arrayList para guardar todos os campos da classe e superclasses
+        List<Field> allFields = new ArrayList<>();
+
+        // Instancia a classe para percorrer a árvore de herança dela
+        Class<?> current = classe;
+
+        // Percorre a árvore de herança até que chegue na raiz
+        while (current != null && current != Object.class) {
+            // Pega todos os campos declarados da classe
+            Field[] declared = current.getDeclaredFields();
+            // Seta todos os campos como acessíveis, para leitura
+            Arrays.stream(declared).forEach(f -> f.setAccessible(true));
+            // Adiciona todos os campos da classe da iteração no array
+            // Reversed é para organização na ordem final que os campos irão ficar*
+            allFields.addAll(Arrays.asList(declared).reversed());
+
+            // Passa para a classe pai
+            current = current.getSuperclass();
+        }
+
+        // Pega o nome de todos os campos da classe e monta o cabeçalho
+        // Reversed é para organização na ordem final que os campos irão ficar*
+        CsvManager.addLineInFile(allFields.reversed().stream().map(Field::getName).toArray(String[]::new), path);
+    }
+
     public static ArrayList<String[]> listContent(String path) throws IOException {
         // Prepara para retorno ------------------------------
         ArrayList<String[]> returnData = new ArrayList<>();
@@ -50,7 +82,6 @@ public class CsvManager {
     }
 
     public static void addLineInFile(String[] data, String path) throws IOException {
-
         //Instancia um novo writer ---------------------------
         BufferedWriter bw = new BufferedWriter(new FileWriter(path, true));
 
@@ -63,7 +94,6 @@ public class CsvManager {
     }
 
     public static void writeFile(ArrayList<String[]> data, String path) throws IOException {
-
         //Instancia um novo writer ---------------------------
         BufferedWriter bw = new BufferedWriter(new FileWriter(path, false));
 

@@ -38,34 +38,10 @@ public abstract class Model<T extends Model<T>> {
     // Métodos das classes modelos ---------------------
     public void insert() throws IOException {
         if(CsvManager.createFileIfNotExists(csvFilePath)){
-            List<Field> allFields = new ArrayList<>();
 
-            Class<?> current = this.getClass();
-            while (current != null && current != Object.class) {
-                Field[] declared = current.getDeclaredFields();
-                Arrays.stream(declared).forEach(f -> f.setAccessible(true));
-                allFields.addAll(Arrays.asList(declared).reversed());
-
-                current = current.getSuperclass();
-            }
-
-            // Pega o nome de todos os campos da classe e monta o cabeçalho
-            CsvManager.addLineInFile(allFields.reversed().stream().map(Field::getName).toArray(String[]::new), csvFilePath);
         }
 
         CsvManager.addLineInFile(toCsv(this), csvFilePath);
-    }
-
-    public static void delete(Integer id) throws IOException {
-        CsvManager.removeInFile(id.toString(), csvFilePath);
-    }
-
-    public static Optional<String[]> find(Integer id) throws IOException {
-        return CsvManager.getLineInFile(id.toString(), csvFilePath);
-    }
-
-    public static ArrayList<String[]> listAll() throws IOException {
-        return CsvManager.listContent(csvFilePath);
     }
 
     public String[] toCsv(Model<T> obj) throws IllegalArgumentException{
