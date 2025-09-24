@@ -28,4 +28,6 @@ public abstract class User extends Model {
         this.phone = phone;
         this.email = email;
     }
+
+    public User(){}
 }

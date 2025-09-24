@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import org.json.JSONObject;
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -39,10 +40,24 @@ public abstract class Model<T extends Model<T>> {
         // Percorre a árvore de herança da classe, guardando os campos declarados no array
         Class<?> current = this.getClass();
         while (current != null && current != Object.class) {
-            Field[] declared = current.getDeclaredFields();
-            Arrays.stream(declared).forEach(f -> f.setAccessible(true));
-            allFields.addAll(Arrays.asList(declared).reversed());
 
+            List<Field> declared = new ArrayList<>();
+
+            // Pega todos os campos declarados da classe
+            for (Field field : current.getDeclaredFields()) {
+                if(Modifier.isStatic(field.getModifiers())) {
+                    continue;
+                }
+                declared.add(field);
+            }
+
+            // Seta todos os campos como acessíveis, para leitura
+            declared.forEach(f -> f.setAccessible(true));
+            // Adiciona todos os campos da classe da iteração no array
+            // Reversed é para organização na ordem final que os campos irão ficar*
+            allFields.addAll(declared.reversed());
+
+            // Passa para a classe pai
             current = current.getSuperclass();
         }
 
@@ -51,15 +66,11 @@ public abstract class Model<T extends Model<T>> {
                 allFields.reversed().stream()
                 .map(field -> {
                     try {
-                        return field.get(this) == null ? "" : field.get(this);
+                        return field.get(this) == null ? "" : field.get(this).toString();
                     } catch (IllegalAccessException e) {
                         throw new RuntimeException(e);
                     }
                 })
                 .toArray(String[]::new));
-    }
-
-    public JSONObject toJson(){
-        return null;
     }
 }

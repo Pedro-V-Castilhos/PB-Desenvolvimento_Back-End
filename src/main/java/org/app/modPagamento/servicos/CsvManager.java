@@ -5,6 +5,7 @@ import org.app.modPagamento.models.Model;
 
 import java.io.*;
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -43,13 +44,22 @@ public class CsvManager {
 
         // Percorre a árvore de herança até que chegue na raiz
         while (current != null && current != Object.class) {
+
+            List<Field> declared = new ArrayList<>();
+
             // Pega todos os campos declarados da classe
-            Field[] declared = current.getDeclaredFields();
+            for (Field field : current.getDeclaredFields()) {
+                if(Modifier.isStatic(field.getModifiers())) {
+                    continue;
+                }
+                declared.add(field);
+            }
+
             // Seta todos os campos como acessíveis, para leitura
-            Arrays.stream(declared).forEach(f -> f.setAccessible(true));
+            declared.forEach(f -> f.setAccessible(true));
             // Adiciona todos os campos da classe da iteração no array
             // Reversed é para organização na ordem final que os campos irão ficar*
-            allFields.addAll(Arrays.asList(declared).reversed());
+            allFields.addAll(declared.reversed());
 
             // Passa para a classe pai
             current = current.getSuperclass();
@@ -59,7 +69,7 @@ public class CsvManager {
         // Reversed é para organização na ordem final que os campos irão ficar*
         ArrayList<String[]> headers = new ArrayList<>();
         headers.add(allFields.reversed().stream().map(Field::getName).toArray(String[]::new));
-        CsvManager.writeFile(headers, path);
+        CsvManager.writeFileContent(headers, path);
     }
 
     public static ArrayList<String[]> listContent(String path) throws IOException {
@@ -86,6 +96,9 @@ public class CsvManager {
     }
 
     public static <T> void insertObjectAsLine(Model object, String path) throws IOException {
+        // Cria o arquivo se ele não existe ------------------
+        createFileIfNotExists(object.getClass(), path);
+
         //Instancia um novo writer ---------------------------
         BufferedWriter bw = new BufferedWriter(new FileWriter(path, true));
 
@@ -98,7 +111,7 @@ public class CsvManager {
         bw.close();
     }
 
-    public static void writeFile(ArrayList<String[]> data, String path) throws IOException {
+    public static void writeFileContent(ArrayList<String[]> data, String path) throws IOException {
         //Instancia um novo writer ---------------------------
         BufferedWriter bw = new BufferedWriter(new FileWriter(path, false));
 
@@ -140,6 +153,6 @@ public class CsvManager {
         fileContent.remove(lineIndex);
 
         // Escreve o conteúdo do arquivo novamente, mas sem a linha removida ---------
-        writeFile(fileContent, path);
+        writeFileContent(fileContent, path);
     }
 }

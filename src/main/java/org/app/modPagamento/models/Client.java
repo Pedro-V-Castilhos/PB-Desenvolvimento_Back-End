@@ -1,5 +1,6 @@
 package org.app.modPagamento.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -19,6 +20,8 @@ public class Client extends User {
         super(name, cpf, phone, email);
         this.address = address;
     }
+
+    public Client(){}
 
     // Construtor com ArrayList, para instanciar com base na linha do CSV
     public Client(String[] csvData) throws IOException {
