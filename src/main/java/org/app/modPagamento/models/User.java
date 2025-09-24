@@ -13,8 +13,16 @@ public abstract class User extends Model {
     private String phone;
     private String email;
 
-    // Construtor ==============================================================================
+    // Construtores ==============================================================================
     public User(String name, String cpf, String phone, String email) throws IOException {
+        this.name = name;
+        this.cpf = cpf;
+        this.phone = phone;
+        this.email = email;
+    }
+
+    public User(int id, String encripKeyPath, String decripKeyPath, String name, String cpf, String phone, String email) throws IOException {
+        super(id, encripKeyPath, decripKeyPath);
         this.name = name;
         this.cpf = cpf;
         this.phone = phone;

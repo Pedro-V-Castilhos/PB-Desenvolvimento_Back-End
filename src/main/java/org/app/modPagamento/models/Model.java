@@ -2,32 +2,36 @@ package org.app.modPagamento.models;
 
 import lombok.Getter;
 import lombok.Setter;
-import lombok.SneakyThrows;
-import org.app.modPagamento.servicos.CsvManager;
-import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.io.File;
-import java.io.IOException;
 import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Stream;
 
 @Getter
 @Setter
 public abstract class Model<T extends Model<T>> {
-    // Campos das classes modelo -----------------------
+    // Campos das classes modelo =========================
     public int id;
     private String encripKeyPath;
     private String decripKeyPath;
 
-    // Métodos das classes modelos ---------------------
+    // Construtores =====================================
+    public Model(int id, String encripKeyPath, String decripKeyPath) {
+        this.id = id;
+        this.encripKeyPath = encripKeyPath;
+        this.decripKeyPath = decripKeyPath;
+    }
+
+    // Construtor de quando transoforma uma linha csv em Model
+    public Model(String encripKeyPath, String decripKeyPath) {
+        this.encripKeyPath = encripKeyPath;
+        this.decripKeyPath = decripKeyPath;
+    }
+
+    public Model() {};
+
+    // Métodos das classes modelos ==========================================
     public String toCsv() throws RuntimeException{
         // Prepara o array para guardar todos os campos da classe
         List<Field> allFields = new ArrayList<>();

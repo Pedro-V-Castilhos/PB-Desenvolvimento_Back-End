@@ -12,8 +12,6 @@ public class Client extends User {
     // Campos do Cliente ============================================================
     public static final String csvFileName = "Clients.csv";
     private String address;
-    private ArrayList<CreditCard> creditCards;
-    private ArrayList<Purchase> compras;
 
     // Construtores =================================================================
     // Construtor com dados explícitos
@@ -23,9 +21,9 @@ public class Client extends User {
     }
 
     // Construtor com ArrayList, para instanciar com base na linha do CSV
-    public Client(String[] data) throws IOException {
-        super(data[0], data[1], data[2], data[3]);
-        this.address = data[4];
+    public Client(String[] csvData) throws IOException {
+        super(Integer.parseInt(csvData[0]), csvData[1], csvData[2], csvData[3], csvData[4], csvData[5], csvData[6]);
+        this.address = csvData[7];
     }
 
     // Métodos =======================================================================

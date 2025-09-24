@@ -15,8 +15,7 @@ public class Purchase extends Model {
     private Client clienteCompra;
     private ArrayList<Item> listaItems;
     private DiscCoupon cupomDesconto;
-    private ArrayList<Payment> pgtoDaCompra;
 
-    public Purchase() throws IOException {
+    public Purchase(){
     }
 }
