@@ -11,10 +11,10 @@ import java.util.ArrayList;
 @Getter
 public class Purchase extends Model {
     public static final String csvFileName = "Purchases.csv";
-    public Integer idCompra;
-    private Client clienteCompra;
-    private ArrayList<Item> listaItems;
-    private DiscCoupon cupomDesconto;
+    private ArrayList<Item> items;
+    private int idClient;
+    private String couponToken;
+    private ArrayList<Payment> pagamentos;
 
     public Purchase(){
     }

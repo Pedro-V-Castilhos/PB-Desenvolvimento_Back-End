@@ -7,9 +7,8 @@ import java.io.IOException;
 
 @Getter
 @Setter
-public class Item extends Model{
+public class Item{
     // Campos ================================================================
-    public static final String csvFileName = "Items.csv";
     private String descricao;
     private Integer quantidade;
     private Double valorUnitario;
@@ -22,9 +21,8 @@ public class Item extends Model{
     }
 
     public Item(String[] csvData){
-        super(Integer.parseInt(csvData[0]), csvData[1], csvData[2]);
-        this.descricao = csvData[3];
-        this.quantidade = Integer.parseInt(csvData[4]);
-        this.valorUnitario = Double.parseDouble(csvData[5]);
+        this.descricao = csvData[0];
+        this.quantidade = Integer.parseInt(csvData[1]);
+        this.valorUnitario = Double.parseDouble(csvData[2]);
     }
 }

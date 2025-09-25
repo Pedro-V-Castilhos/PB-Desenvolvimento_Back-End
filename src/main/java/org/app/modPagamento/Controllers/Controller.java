@@ -3,7 +3,6 @@ package org.app.modPagamento.Controllers;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
-import io.javalin.http.HttpStatus;
 import org.app.modPagamento.models.Model;
 import org.app.modPagamento.servicos.CsvManager;
 import java.io.IOException;
